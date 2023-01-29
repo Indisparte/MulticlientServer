@@ -3,7 +3,7 @@
 #include <string.h>
 #include "list.h"
 
-list_node *createnode(int *data)
+list_node *createnode(int data)
 {
     list_node *newNode = malloc(sizeof(list_node));
     if (!newNode)
@@ -41,7 +41,7 @@ void displayList(List *list)
     printf("->end\n");
 }
 
-void addToList(int *data, List *list)
+void addToList(int data, List *list)
 {
     list_node *current = NULL;
     if (list->head == NULL)

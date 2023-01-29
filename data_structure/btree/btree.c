@@ -8,13 +8,13 @@
 
 BTree *newTree()
 {
-    KDTree *result = malloc(sizeof(KDTree));
+    BTree *result = malloc(sizeof(BTree));
     result->mutex = (pthread_mutex_t)PTHREAD_MUTEX_INITIALIZER;
     result->root = NULL;
     return result;
 }
 
-BTree *buildKDTreeFromFile(const char *filename)
+BTree *buildBTreeFromFile(const char *filename)
 {
     BTree *tree = newTree();
     FILE *file = fopen(filename, "r");
@@ -46,12 +46,12 @@ BTree *buildKDTreeFromFile(const char *filename)
 /*
 Opens storage file (data/data.txt), uses it to build kd tree, then closes file and returns pointer to the tree.
 */
-BTree *buildKDTree()
+BTree *buildBTree()
 {
-    return buildKDTreeFromFile("data/data.txt");
+    return buildBTreeFromFile("data/data.txt");
 }
 
-Node *newNode(int *integer)
+Node *newNode(int integer)
 {
     Node *temp = malloc(sizeof(Node));
 
@@ -64,20 +64,20 @@ Node *newNode(int *integer)
 int getMaxRec(Node *node)
 {
     if (node->right == NULL)
-        return node->data;
+        return node->integer;
     return getMaxRec(node->right);
 }
 
-int *getMax(BTree *tree)
+int getMax(BTree *tree)
 {
     pthread_mutex_lock(&tree->mutex);
-    int *result = getMaxRec(tree->root);
+    int result = getMaxRec(tree->root);
     pthread_mutex_unlock(&tree->mutex);
 
     return result;
 }
 
-Node *insertRec(Node *node, int *data)
+Node *insertRec(Node *node, int data)
 {
     /* 1. If the tree is empty, return a new,
      single node */
@@ -87,17 +87,17 @@ Node *insertRec(Node *node, int *data)
     {
 
         /* 2. Otherwise, recur down the tree */
-        if (data <= node->data)
-            node->left = insert(node->left, data);
+        if (data <= node->integer)
+            node->left = insertRec(node->left, data);
         else
-            node->right = insert(node->right, data);
+            node->right = insertRec(node->right, data);
 
         /* return the (unchanged) node pointer */
         return node;
     }
 }
 
-Node *insert(BTree *tree, int *integer)
+Node *insert(BTree *tree, int integer)
 {
     pthread_mutex_lock(&tree->mutex);
     Node *result = insertRec(tree->root, integer);
@@ -122,18 +122,17 @@ void destroyTree(BTree *tree)
     pthread_mutex_destroy(&tree->mutex);
 }
 
-// Ticker is used to alternate key comparisons between latitude and longitude
-void getAsList(Node *root, List *list)
+void getAsList(Node *node, List *list)
 {
 
-    if (root == null)
+    if (node == NULL)
         return;
 
     getAsList(node->left, list);
 
-    if (root->left == null && node->right == null)
+    if (node->left == NULL && node->right == NULL)
     {
-        addToList(root->integer, list);
+        addToList(node->integer, list);
         return;
     }
 
@@ -169,7 +168,7 @@ void print2DUtil(Node *root, int space)
     printf("\n");
     for (int i = 10; i < space; i++)
         printf(" ");
-    printf("%s [%f,%f]\n", root->pothole->user->username, root->pothole->latitude, root->pothole->longitude);
+    printf("%d\n", root->integer);
 
     // Process left child
     print2DUtil(root->left, space);
@@ -187,7 +186,6 @@ void printTree(BTree *tree)
         pthread_mutex_unlock(&tree->mutex);
         return;
     }
-    // treeprint(tree->root,0);
     print2DUtil(tree->root, 0);
     pthread_mutex_unlock(&tree->mutex);
 }

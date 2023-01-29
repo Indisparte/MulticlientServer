@@ -21,11 +21,12 @@ void sendMsg(const User *user, const char *msg)
 bool add_integer(User *user, const char *msg, BTree *tree)
 {
     char buffer[2064];
-    int to_add = 0
+    int to_add ;
     buffer[sizeof(buffer)] = '\0';
 
     stringInsideSquareBracket(msg, sizeof(buffer), buffer);
 
+printf("In bracket %s",buffer);
     to_add = atoi(buffer);
 
     // add new pothole into tree
@@ -44,7 +45,7 @@ bool add_integer(User *user, const char *msg, BTree *tree)
     }
 }
 
-void send_integers(const User *user, KDTree *tree)
+bool send_integers(const User *user, BTree *tree)
 {
     printf("Sending integers to user\n");
     // get all integers
@@ -70,7 +71,7 @@ void send_integers(const User *user, KDTree *tree)
     printTree(tree);
 }
 
-void send_max(const User *user, KDTree *tree)
+void send_max(const User *user, BTree *tree)
 {
     char* max_value;
     sprintf(max_value, "%d\n", getMax(tree));
@@ -78,7 +79,7 @@ void send_max(const User *user, KDTree *tree)
     printf("Sending max to user\n");
 }
 
-bool dispatch(User *user, int command, char *msg, KDTree *tree)
+bool dispatch(User *user, int command, char *msg, BTree *tree)
 {
     switch (command)
     {
@@ -98,10 +99,10 @@ bool dispatch(User *user, int command, char *msg, KDTree *tree)
             printf("[+] List of integers correctly send to user\n");
         return true;
     case EXIT:
-        printf("User (%s) want exit...\n", user->username);
+        printf("User want exit...\n");
         return false;
     default:
-        printf("Unknown command (%d) by user (%s), full message: %s\n", command, user->username, msg);
+        printf("Unknown command (%d) full message: %s\n", command, msg);
         return false;
     }
     return true;

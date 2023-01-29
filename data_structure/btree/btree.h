@@ -7,7 +7,7 @@
 // 0 latitude and 1 longitude
 typedef struct node
 {
-    int *integer;
+    int integer;
     struct node *left, *right;
 
 } Node;
@@ -18,9 +18,9 @@ typedef struct kdtree
     Node *root;
 } BTree;
 
-BTree *buildKDTree();
-Node *insert(BTree *tree, int *integer);
-int *getMax(BTree *tree);
+BTree *buildBTree();
+Node *insert(BTree *tree, int integer);
+int getMax(BTree *tree);
 
 /*
 Searches through root for points inside given radius.

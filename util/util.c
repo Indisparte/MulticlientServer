@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include "../data_structure/kdtree/kdtree.h"
+#include "../data_structure/btree/btree.h"
 #include "../data_structure/entity/user.h"
 
 long stringInsideSquareBracket(const char *in, long out_size, char *out)
@@ -30,12 +30,12 @@ long stringInsideSquareBracket(const char *in, long out_size, char *out)
     return -1;
 }
 
-bool writeOnFile(const char *filename, int *pothole)
+bool writeOnFile(const char *filename, int integer)
 {
     FILE *file = fopen(filename, "a+");
     assert(file);
 
-    fprintf(file, "[%d]\n", pothole);
+    fprintf(file, "[%d]\n", integer);
     fclose(file);
     return true;
 }
@@ -46,7 +46,7 @@ double calculateMaxFromFile(const char *filename)
     assert(file);
     if (file != NULL)
     {
-        double threshold = 0;
+        double max = 0;
         double i;
         int counter = 0;
         char buffer[1000];
@@ -58,15 +58,15 @@ double calculateMaxFromFile(const char *filename)
             if (value != NULL)
             {
                 sscanf(value, ";%lf]", &i);
-                threshold += i;
+                max += i;
             }
         }
         fclose(file);
 
-        if (threshold == 0)
+        if (max == 0)
             return 15;
         else
-            return threshold / counter;
+            return max / counter;
     }
     else
     {
@@ -80,7 +80,7 @@ void buildJsonString(const list_node *node, char *json_string)
 
     if (node != NULL)
     {
-        sprintf(tmp, "{\"val\":%d}", node->pothole->user->username, node->pothole->latitude, node->pothole->longitude, node->pothole->variation);
+        sprintf(tmp, "{\"val\":%d}", node->integer);
 
         if (node->next != NULL)
             strcpy(tmp, strcat(tmp, ","));

@@ -3,7 +3,7 @@
 
 typedef struct list_node
 {
-    int *integer;
+    int integer;
     struct list_node *next;
 } list_node;
 
@@ -13,7 +13,7 @@ typedef struct list
 } List;
 
 List *makelist();
-void addToList(int *data, List *list);
+void addToList(int data, List *list);
 void displayList(List *list);
 void destroyList(List *list);
 
