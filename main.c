@@ -24,7 +24,6 @@ int check(int exp, const char *msg);
 void *handle_connection(void *client_cocket);
 void close_connection(User *user);
 
-
 BTree *tree;
 int main()
 {
@@ -47,7 +46,7 @@ int main()
 
     printf("[+]Bind to port %d\n", PORT);
 
-    //Load potholes from file
+    // Load potholes from file
     tree = buildBTree();
 
     check(listen(server, SERVER_BACKLOG), "[-]Error Listening.\n");
@@ -91,6 +90,7 @@ void error(const char *msg)
     exit(EXIT_FAILURE);
 }
 
+//Manages connections by listening for incoming messages
 void *handle_connection(void *p_client_cocket)
 {
 
@@ -98,18 +98,15 @@ void *handle_connection(void *p_client_cocket)
     char buffer[BUFSIZE];
     ssize_t msglen;
 
-    // check if message is not empty. If so, close connectionps
-    msglen = recv(user->client_fd, buffer, BUFSIZE, 0);
-    if (msglen <= 0)
-    {
-        close_connection(user);
-    }
-    buffer[msglen] = '\0';
+    // If you want to implement a login where maybe the user has to enter a username, 
+    //here is the place to do it.
 
     do
     {
         printf("Listening requests...\n");
         msglen = recv(user->client_fd, buffer, BUFSIZE, MSG_NOSIGNAL);
+
+        // check if message is not empty. If so, close connections.
         if (msglen <= 0)
         {
             if (errno == EINTR)
@@ -118,7 +115,8 @@ void *handle_connection(void *p_client_cocket)
             break;
         }
         buffer[msglen] = '\0';
-        printf("Data recived  : %s\n", buffer);
+        printf("Data received : %s\n", buffer);
+
     } while (dispatch(user, buffer[0], buffer + 1, tree));
 
     close_connection(user);
