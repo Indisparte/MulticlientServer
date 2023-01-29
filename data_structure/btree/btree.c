@@ -87,9 +87,9 @@ Node *insertRec(Node *node, int data)
     {
 
         /* 2. Otherwise, recur down the tree */
-        if (data <= node->integer)
+        if (data < node->integer)
             node->left = insertRec(node->left, data);
-        else
+        else if(data > node->integer)
             node->right = insertRec(node->right, data);
 
         /* return the (unchanged) node pointer */
