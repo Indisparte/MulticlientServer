@@ -129,13 +129,7 @@ void getAsList(Node *node, List *list)
         return;
 
     getAsList(node->left, list);
-
-    if (node->left == NULL && node->right == NULL)
-    {
-        addToList(node->integer, list);
-        return;
-    }
-
+    addToList(node->integer, list);
     getAsList(node->right, list);
 }
 

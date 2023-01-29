@@ -26,7 +26,6 @@ bool add_integer(User *user, const char *msg, BTree *tree)
 
     stringInsideSquareBracket(msg, sizeof(buffer), buffer);
 
-printf("In bracket %s",buffer);
     to_add = atoi(buffer);
 
     // add new pothole into tree

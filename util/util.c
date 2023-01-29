@@ -80,7 +80,7 @@ void buildJsonString(const list_node *node, char *json_string)
 
     if (node != NULL)
     {
-        sprintf(tmp, "{\"val\":%d}", node->integer);
+        sprintf(tmp, "%d", node->integer);
 
         if (node->next != NULL)
             strcpy(tmp, strcat(tmp, ","));
