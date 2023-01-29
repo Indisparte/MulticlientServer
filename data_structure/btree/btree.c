@@ -14,11 +14,11 @@ BTree *newTree()
     return result;
 }
 
+// Retrieves elements from the file in which they are stored and uses them to build the tree
 BTree *buildBTreeFromFile(const char *filename)
 {
     BTree *tree = newTree();
-    FILE *file = fopen(filename, "r");
-    assert(file);
+    FILE *file = fopen(filename, "r");// only read
 
     if (file != NULL)
     {
@@ -27,25 +27,29 @@ BTree *buildBTreeFromFile(const char *filename)
         size_t strLen = 0;
         char insideBrachet[BUFSIZ];
 
-        while (getline(&currentLine, &strLen, file) != -1)
+        while (getline(&currentLine, &strLen, file) != -1) // Scroll through the file line by line
         {
             stringInsideSquareBracket(currentLine, sizeof(insideBrachet), insideBrachet);
-            int value = atoi(insideBrachet);
+
+            int value = atoi(insideBrachet); // Converts the found string to an integer
 
             tree->root = insert(tree, value);
         }
 
         free(currentLine);
         fclose(file);
+        printf("[+]Tree built\n");
     }
-    printf("[+]Tree built\n");
+    else
+    {
+        printf("[-]Unable to build the tree, the file (%s) does not exist", filename);
+    }
 
     return tree;
 }
 
-/*
-Opens storage file (data/data.txt), uses it to build kd tree, then closes file and returns pointer to the tree.
-*/
+//Opens storage file (data/data.txt), uses it to build the binary tree, 
+//then closes file and returns pointer to the tree.
 BTree *buildBTree()
 {
     return buildBTreeFromFile("data/data.txt");
@@ -68,6 +72,7 @@ int getMaxRec(Node *node)
     return getMaxRec(node->right);
 }
 
+
 int getMax(BTree *tree)
 {
     pthread_mutex_lock(&tree->mutex);
@@ -89,7 +94,7 @@ Node *insertRec(Node *node, int data)
         /* 2. Otherwise, recur down the tree */
         if (data < node->integer)
             node->left = insertRec(node->left, data);
-        else if(data > node->integer)
+        else if (data > node->integer)
             node->right = insertRec(node->right, data);
 
         /* return the (unchanged) node pointer */
@@ -162,15 +167,14 @@ void print2DUtil(Node *root, int space)
     printf("\n");
     for (int i = 10; i < space; i++)
         printf(" ");
+
     printf("%d\n", root->integer);
 
     // Process left child
     print2DUtil(root->left, space);
 }
 
-/*
-Prints tree in traditional sorted order locking mutex
-*/
+
 void printTree(BTree *tree)
 {
     pthread_mutex_lock(&tree->mutex);

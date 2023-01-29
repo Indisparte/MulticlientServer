@@ -7,6 +7,7 @@
 #include <math.h>
 #include <sys/socket.h>
 
+// Sends a message on the socket printing an error in case there is.
 void sendMsg(const User *user, const char *msg)
 {
     if (send(user->client_fd, msg, strlen(msg), 0) == -1)
@@ -26,10 +27,10 @@ bool add_integer(User *user, const char *msg, BTree *tree)
 
     to_add = atoi(buffer);
 
-    // add new pothole into tree
+    // Adds a new integer in the tree
     tree->root = insert(tree, to_add);
 
-    // add new pothole into file
+    // Adds a new integer in the file
     if (!writeOnFile("data/data.txt", to_add))
     {
         printf("[-]Integer not stored in the file!\n");
@@ -49,9 +50,10 @@ bool send_integers(const User *user, BTree *tree)
     List *result = getAllIntegers(tree);
     if (result->head != NULL)
     {
-        // build JSON as response
-        char json[50000] = "{\"integers\":[";
+        // build JSON formatted string as response
+        char json[50000] = "{\"integers\":["; // json list name
         buildJsonString(result->head, json);
+
         sendMsg(user, json);
 
         destroyList(result);
@@ -60,7 +62,7 @@ bool send_integers(const User *user, BTree *tree)
 
         printf("- - - The tree - - -\n");
         printTree(tree);
-        
+
         return true;
     }
     else
@@ -75,7 +77,7 @@ void send_max(const User *user, BTree *tree)
     char *max_value;
     sprintf(max_value, "%d\n", getMax(tree));
     sendMsg(user, max_value);
-    printf("Sending max to user\n");
+    printf("Sending max value (%s) to user\n", max_value);
 }
 
 bool dispatch(User *user, int command, char *msg, BTree *tree)
@@ -85,7 +87,7 @@ bool dispatch(User *user, int command, char *msg, BTree *tree)
     case NEW_INT:
         printf("User want add an integer\n");
         add_integer(user, msg, tree);
-        return true;
+       return true;
     case MAX:
         printf("User want max value\n");
         send_max(user, tree);
@@ -93,16 +95,17 @@ bool dispatch(User *user, int command, char *msg, BTree *tree)
     case LIST:
         printf("User want list of integers\n");
         if (!send_integers(user, tree))
-            printf("[-] Unable to send list of integers\n");
+            printf("[-]Unable to send list of integers\n");
         else
-            printf("[+] List of integers correctly send to user\n");
+            printf("[+]List of integers correctly send to user\n");
         return true;
     case EXIT:
         printf("User want exit...\n");
         return false;
     default:
         printf("Unknown command (%d) full message: %s\n", command, msg);
-        return false;
+        //You can send an error message to alert the client (like 404)
+        //return false;
     }
     return true;
 }

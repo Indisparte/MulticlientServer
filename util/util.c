@@ -33,46 +33,12 @@ long stringInsideSquareBracket(const char *in, long out_size, char *out)
 bool writeOnFile(const char *filename, int integer)
 {
     FILE *file = fopen(filename, "a+");
-    assert(file);
 
     fprintf(file, "[%d]\n", integer);
     fclose(file);
     return true;
 }
 
-double calculateMaxFromFile(const char *filename)
-{
-    FILE *file = fopen(filename, "r");
-    assert(file);
-    if (file != NULL)
-    {
-        double max = 0;
-        double i;
-        int counter = 0;
-        char buffer[1000];
-
-        while (fgets(buffer, sizeof(buffer), file) != NULL)
-        {
-            counter++;
-            char *value = strrchr(buffer, ';');
-            if (value != NULL)
-            {
-                sscanf(value, ";%lf]", &i);
-                max += i;
-            }
-        }
-        fclose(file);
-
-        if (max == 0)
-            return 15;
-        else
-            return max / counter;
-    }
-    else
-    {
-        return 15;
-    }
-}
 
 void buildJsonString(const list_node *node, char *json_string)
 {
@@ -91,5 +57,10 @@ void buildJsonString(const list_node *node, char *json_string)
         }
         strcpy(json_string, strcat(json_string, tmp));
         buildJsonString(node->next, json_string);
+    }
+    else
+    {
+        strcpy(tmp, strcat(tmp, "]}\n"));
+        tmp[strlen(tmp)] = '\0';
     }
 }

@@ -9,10 +9,11 @@ enum Command
     NEW_INT = 'i', // usage: i [integer]
     LIST = 'l',    // usage: l
     MAX = 'm',     // usage: m
-    EXIT = 'e'    // usage: e
+    EXIT = 'e'     // usage: e
 };
 
-// return true for continue, else false for exit
+//Handles functions for each command requested by the client.
+//Returns false if a command fails, otherwise true
 bool dispatch(User *, int, char *, BTree *);
 
 #endif // !SERVER_H
