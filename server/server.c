@@ -7,7 +7,6 @@
 #include <math.h>
 #include <sys/socket.h>
 
-
 void sendMsg(const User *user, const char *msg)
 {
     if (send(user->client_fd, msg, strlen(msg), 0) == -1)
@@ -17,11 +16,10 @@ void sendMsg(const User *user, const char *msg)
     }
 }
 
-
 bool add_integer(User *user, const char *msg, BTree *tree)
 {
     char buffer[2064];
-    int to_add ;
+    int to_add;
     buffer[sizeof(buffer)] = '\0';
 
     stringInsideSquareBracket(msg, sizeof(buffer), buffer);
@@ -59,6 +57,10 @@ bool send_integers(const User *user, BTree *tree)
         destroyList(result);
 
         json[sizeof(json)] = '\0';
+
+        printf("- - - The tree - - -\n");
+        printTree(tree);
+        
         return true;
     }
     else
@@ -66,13 +68,11 @@ bool send_integers(const User *user, BTree *tree)
         printf("[-]No integers were found\n");
         return false;
     }
-    printf("- - - The tree - - -\n");
-    printTree(tree);
 }
 
 void send_max(const User *user, BTree *tree)
 {
-    char* max_value;
+    char *max_value;
     sprintf(max_value, "%d\n", getMax(tree));
     sendMsg(user, max_value);
     printf("Sending max to user\n");
