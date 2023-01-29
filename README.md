@@ -1,5 +1,5 @@
 
-# TCPClient 🧞‍
+# MulticlientServer 🧞‍
 ![License](https://img.shields.io/github/license/Indisparte/MulticlientServer?logo=MIT)
 
 A simple C template that lets you create a **C TCP MultiClientn Server** project quickly. 
@@ -23,7 +23,7 @@ Read the [documentation](https://github.com/Indisparte/MulticlientServer/wiki)
 Feel free to open an [Issues](https://github.com/Indisparte/MulticlientServer/issues) or submit a [Pull requests](https://github.com/Indisparte/MulticlientServer/pulls) for any bugs/enhancement.
 
 ## Result 📺
-<img src="https://github.com/Indisparte/TCPClient/blob/main/images/screenshot.png" width="350px" height="700px" /> 
+<img src="https://github.com/Indisparte/MulticlientServer/serverandclient.gif" width="350px" height="700px" /> 
 
 ## License ⚖️
 ```
