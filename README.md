@@ -8,7 +8,7 @@ A simple C template that lets you create a **C TCP MultiClient Server** project 
 
 Just click on [![Use this template](https://img.shields.io/badge/-Use%20this%20template-brightgreen)](https://github.com/Indisparte/MulticlientServer/generate) button to create a new repo starting from this template.
 
-Read the [documentation](https://github.com/Indisparte/MulticlientServer/wiki)
+🚧 Work in progress 🚧 Read the [documentation](https://github.com/Indisparte/MulticlientServer/wiki)
 
 ## Features 🕹
 
