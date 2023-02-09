@@ -2,7 +2,7 @@
 # MulticlientServer 🧞‍
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-A simple C template that lets you create a **C TCP MultiClientn Server** project quickly. 
+A simple C template that lets you create a **C TCP MultiClient Server** project quickly. 
 
 ## How to use 👣
 
